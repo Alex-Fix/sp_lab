@@ -1,0 +1,75 @@
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/12/20 21:27:32
+calc.asm						     Page 1 - 1
+
+
+				.586
+				.model flat, c
+				EXTRN K:dword
+				PUBLIC calc
+ 00000000			.data
+
+ 00000000			.code
+
+ 00000000				calc PROC
+						
+ 00000000  55					push ebp
+ 00000001  8B EC				mov ebp, esp
+
+						; X = K + B1/C2 - D2*F2 - E1
+ 00000003  D9 45 08				fld dword ptr [ebp + 8]			; st(0) = B1
+ 00000006  DC 75 0C				fdiv qword ptr [ebp + 12]		; B1/C2
+						
+ 00000009  DD 45 14				fld  qword ptr [ebp + 20]		; st(0) = D2, st(1) = B1/C2
+ 0000000C  DC 4D 20				fmul qword ptr [ebp + 32]		; st(0) = D2*F2
+
+ 0000000F  D8 E9				fsubr st, st(1)					; st(0) = B1/C2 - D2*F2
+
+ 00000011  D8 65 1C				fsub dword ptr [ebp + 28]	; st(0) = B1/C2 - D2*F2 - E1
+
+ 00000014  DB 05 00000000 E			fild K							; st(0) = K, st(1) = B1/C2 - D2*F2 - E1
+ 0000001A  D8 C1				fadd st, st(1)					; st(0) = K + B1/C2 - D2*F2 - E1
+						
+ 0000001C  5D					pop ebp
+ 0000001D  C3					ret
+ 0000001E				calc ENDP
+
+				END
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/12/20 21:27:32
+calc.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000001E Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+calc . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001E Public C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+K  . . . . . . . . . . . . . . .	DWord	 00000000 FLAT	External C
+
+	   0 Warnings
+	   0 Errors

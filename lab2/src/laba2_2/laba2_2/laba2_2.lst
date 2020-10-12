@@ -1,0 +1,100 @@
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/08/20 16:22:09
+calc.asm						     Page 1 - 1
+
+
+				.386
+				.model flat, c
+
+				includelib "C:\masm32\lib\msvcrt.lib"
+
+				EXTRN K:dword
+
+				extern C printf:proc
+
+ 00000000			.data
+
+ 00000000 52 65 73 75 6C	format db "Result =  %x", 13, 10, 0
+	   74 20 3D 20 20
+	   25 78 0D 0A 00
+
+ 00000000			.code
+
+
+ 00000000				calc PROC
+						; f = [ebp+8]
+						; e = [ebp+12]
+						; b = [ebp+16]
+						
+ 00000000  55					push ebp
+ 00000001  8B EC				mov ebp, esp
+
+						; B/2;
+ 00000003  8B 45 08				mov eax, [ebp+8]
+ 00000006  D1 F8				sar eax, 1
+						
+						; K + B/2
+ 00000008  03 05 00000000 E			add eax, K
+
+						; K + B/2 - 4*F
+ 0000000E  33 DB				xor ebx, ebx
+ 00000010  66| 8B 5D 10				mov bx, [ebp+16]
+ 00000014  C1 E3 02				sal ebx, 2
+ 00000017  2B C3				sub eax, ebx
+
+						; K + B/2 - 4*F - E
+ 00000019  8B 5D 0C				mov ebx, [ebp+12]
+ 0000001C  2B C3				sub eax, ebx
+
+
+ 0000001E  5D					pop ebp
+ 0000001F  50					push eax
+ 00000020  68 00000000 R			push offset format
+ 00000025  E8 00000000 E			call printf
+ 0000002A  58					pop eax
+ 0000002B  58					pop eax
+ 0000002C  C3					ret
+ 0000002D				calc ENDP
+
+
+				END
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/08/20 16:22:09
+calc.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000000F DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000002D DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+calc . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000002D Public C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+K  . . . . . . . . . . . . . . .	DWord	 00000000 FLAT	External C
+format . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+printf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+
+	   0 Warnings
+	   0 Errors

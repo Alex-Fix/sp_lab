@@ -1,0 +1,86 @@
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/05/20 19:43:25
+calc.asm						     Page 1 - 1
+
+
+				.386
+				.model flat, c
+
+				EXTRN K:dword
+				PUBLIC calc
+ 00000000			.data
+
+ 00000000			.code
+
+
+ 00000000				calc PROC
+						; f = [ebp+8]
+						; e = [ebp+12]
+						; b = [ebp+16]
+						
+ 00000000  55					push ebp
+ 00000001  8B EC				mov ebp, esp
+
+						; B/2;
+ 00000003  8B 45 08				mov eax, [ebp+8]
+ 00000006  D1 F8				sar eax, 1
+						
+						; K + B/2
+ 00000008  03 05 00000000 E			add eax, K
+
+						; K + B/2 - 4*F
+ 0000000E  33 DB				xor ebx, ebx
+ 00000010  66| 8B 5D 10				mov bx, [ebp+16]
+ 00000014  C1 E3 02				sal ebx, 2
+ 00000017  2B C3				sub eax, ebx
+
+						; K + B/2 - 4*F - E
+ 00000019  8B 5D 0C				mov ebx, [ebp+12]
+ 0000001C  2B C3				sub eax, ebx
+
+
+ 0000001E  5D					pop ebp
+
+ 0000001F  C3					ret
+ 00000020				calc ENDP
+
+
+				END
+Microsoft (R) Macro Assembler Version 14.24.28315.0	    10/05/20 19:43:25
+calc.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000020 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+calc . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000020 Public C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+K  . . . . . . . . . . . . . . .	DWord	 00000000 FLAT	External C
+
+	   0 Warnings
+	   0 Errors
