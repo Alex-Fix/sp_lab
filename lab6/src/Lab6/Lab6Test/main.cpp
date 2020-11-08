@@ -2,7 +2,7 @@
 #include "../Lab6/dllprinter.h"
 
 int main() {
-	char str[] = "testfasdf test\tano test ano ano text test ano";
+	char str[] = "a b c a";
 	cout <<"Before: "<< str << endl<<"After: ";
 
 	PrintText(str, sizeof(str));
